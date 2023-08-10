@@ -7,6 +7,7 @@ import de.leonhard.storage.util.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.NonNull;
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.Nullable;
 
 public interface DataStorage {
@@ -66,6 +67,23 @@ public interface DataStorage {
       return Optional.empty();
     }
     return Optional.of(ClassWrapper.getFromDef(raw, type));
+  }
+
+  /**
+   * Get a minecraft colored text from a data-structure
+   *
+   * @param key Path to String in data-structure
+   * @return Returns the value
+   */
+  default String getText(final String key) {
+    return ChatColor.translateAlternateColorCodes('&', getString(key));
+  }
+
+  default List<String> getTextList(final String key) {
+    List<String> list = new ArrayList<String>();
+    for (String text : getStringList(key))
+      list.add(ChatColor.translateAlternateColorCodes('&', text));
+    return list;
   }
 
   /**
